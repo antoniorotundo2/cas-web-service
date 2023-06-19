@@ -1,0 +1,81 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin);
+
+.html{
+    background: url(https://wallpapers.com/images/hd4/ubuntu-clean-gradient-hd-aanxb8ba5q60gnj0.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: Ubuntu, "times new roman", times, roman, serif;
+}
+
+.window {
+    position: absolute;
+    min-width: 280px;
+    min-height: 320px;
+    display: inline-block;
+    border: 2px solid linear-gradient(180deg, #000, #fff);
+    display: block;
+    border-radius: 5%;
+    z-index: 1;
+}
+
+.window .top-bar {
+    background-color: #302f2f;
+}
+
+.window .top-bar::selection {
+    /* background-color: #4a4848; */
+    opacity: 0.5;
+}
+
+.window .top-bar .button-close {
+    background-color: linear-gradient(0deg, #d23a0c, #fff);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.window .top-bar .button-hide, .button-minmax {
+    background-color: linear-gradient(0deg, #7e7c7b, #fff);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.window .top-bar .button-close:hover, .button-close:active, .button-hide:hover, .button-hide:active, .button-minmax:hover, .button-minmax:active {
+    opacity: 0.2;
+}
+
+.window .top-bar .button-close::selection {
+    display: none;
+}
+
+.window .button-hide::selection {
+    display: none;
+}
+
+.window .top-bar .button-minmax::selection {
+
+}
+
+.window .top-bar .title {
+    font-weight: bold;
+    height: 4px;
+}
+
+.window .content {
+    background-color: #421234;
+}
+
+.window .content .user-path {
+    color: #fff;
+}
+
+.window .content .command {
+    color: #0f0;
+}

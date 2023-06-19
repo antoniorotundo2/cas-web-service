@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grid Exercise</title>
+    <style>
+      .container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+          "header header header header"
+          "sidebar . main main"
+          "footer footer footer footer";
+        gap: 20px;
+      }
+
+      .item-a {
+        grid-area: header;
+        display: flex;
+        border-color: #79b8d6;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 4px;
+        background-color: #d4e7dd;
+        padding: 4px;
+        align-content: flex-start;
+      }
+
+      .item-b {
+        grid-area: sidebar;
+        justify-self: start;
+        align-self: start;
+      }
+
+      .item-c {
+        grid-area: main;
+        justify-self: start;
+        align-self: start;
+      }
+
+      .item-d {
+        grid-area: footer;
+        display: flex;
+        border-color: #79b8d6;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 4px;
+        background-color: #d4e7dd;
+        padding: 4px;
+        align-content: flex-start;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="item-a">This is my lovely blog</div>
+    <div class="item-b">
+      <h2>Other things</h2>
+      <p>This is a sample sidebar</p>
+    </div>
+    <div class="item-c">
+      <h2>My Article</h2>
+      <p>This is my first article</p>
+    </div>
+    <div class="item-d">Contact me@mysite.com</div>
+  </body>
+</html>

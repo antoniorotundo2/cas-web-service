@@ -1,0 +1,23 @@
+{
+  "name": "cas-web-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "author": "Antonio Rotundo",
+  "license": "ISC",
+  "dependencies": {
+    "@socket.io/admin-ui": "^0.5.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^7.0.1",
+    "mongoose-unique-validator": "^4.0.0",
+    "mqtt": "^4.3.7",
+    "socket.io": "^4.6.1"
+  }
+}

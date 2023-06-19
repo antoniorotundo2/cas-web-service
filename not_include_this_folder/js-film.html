@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Prova titolo</title>
+
+  <style>
+    body,
+    html {
+      background: #ccc;
+    }
+
+    body,
+    html,
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* gli elementi contenuti in questo selettore non saranno visibili */
+    .view {
+      display: none;
+    }
+
+    /* gli elementi contenuti in questo selettore saranno visibili */
+    .view.active {
+      display: block;
+    }
+
+    .container-film {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    @media only screen and (min-width: 500px) {
+      .container-film {
+        flex-direction: row;
+      }
+
+      .container-film .card {
+        flex: 1 200px
+      }
+
+      .container-film .card .cover {
+        height: 350px;
+      }
+
+
+    }
+
+    @media only screen and (min-width: 1000px) {
+
+      .container-film .card {
+        flex: 1 300px
+      }
+
+
+    }
+
+
+
+    .card {
+      color: black;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      display: block;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+    }
+
+    .card .cover {
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+    }
+
+    .card .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card hr {
+      border-color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .card .description {
+      font-size: 16px;
+    }
+
+
+    .card .footer {
+      margin-top: 10px;
+    }
+
+
+    .card .footer button,
+    #backBtn {
+
+      display: block;
+      width: 100%;
+      cursor: pointer;
+      background: #7c2ae8;
+      padding: 10px;
+      color: white;
+      border: 2px solid #fff;
+      border-radius: 10px;
+    }
+
+    .card .footer button:hover,
+    #backBtn:hover {
+      background: #fff;
+      border: 2px solid #7c2ae8;
+      color: #7c2ae8;
+      ;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="view-search" class="view active">
+
+    <div class="search">
+      <input id="searchInput" type="text" placeholder="Inserisci elemento da cercare">
+      <select id="searchSelect" name="select">
+        <option value="value1" selected>Titolo</option>
+        <option value="value2">ID</option>
+      </select>
+      <button id="searchBtn">Cerca</button>
+    </div>
+
+
+    <div id="risultati" class="container-film">
+    </div>
+
+  </div>
+
+  <div id="view-movieinfo" class="view">
+    <button id="backBtn">Indietro</button>
+    <div id="movieinfo2">
+
+    </div>
+  </div>
+
+  <script>
+    // ricerca i film in base al titolo
+    const apiFilm = {
+      apiURL: "http://www.omdbapi.com/?apikey=397b9896&type=movie&s=",
+      getFilms: function (title) {
+
+        return fetch(this.apiURL + title).then(resp => resp.json());
+      },
+    };
+    // ricerca un film in base all'id su imdb
+    const apiFilm2 = {
+      apiURL: "http://www.omdbapi.com/?apikey=397b9896&type=movie&plot=short&i=",
+      getFilms: function (id) {
+        // ritorna l'indirizzo corrente più l'id, ricevuto dal campo di testo, e ritorna l'oggetto json
+        return fetch(this.apiURL + id).then(resp => resp.json());
+      },
+    };
+    // esegui il codice javascript qui contenuto solo se la pagina è stata del tutto caricata
+    window.onload = () => {
+
+      console.log("Caricamento avvenuto della pagina");
+
+      const containerRisultati = document.getElementById("risultati");
+      const searchInput = document.getElementById("searchInput");
+      const searchSelect = document.getElementById("searchSelect");
+      const searchBtn = document.getElementById("searchBtn");
+      const backBtn = document.getElementById("backBtn");
+
+      const application = {
+        searchMovies: (title) => {
+          return apiFilm.getFilms(title)
+        },
+        searchMovies2: (id) => {
+          return apiFilm2.getFilms(id)
+        },
+
+        createCardFilm: (cover, title, id, year) => {
+          return '      <div class="card">\
+                            <div class="cover">\
+                              <img src="'+ cover + '" > \
+                              </div>\
+                            <div class="title">'+ title + '</div>\
+                            <div class="imdbid">\
+                              IMDb ID: '+ id + '\
+                            </div>\
+                            <hr>\
+                            <div class="year">\
+                              '+ year + '\
+                            </div>\
+                            <div class="footer">\
+                              <button data-movieid="'+ id + '">Più info</button>\
+                            </div>\
+                          </div>';
+        },
+        emptyContainerResults: () => {
+          containerRisultati.innerHTML = "";
+        },
+        loadingMovies: () => {
+          containerRisultati.innerHTML = "Caricamento dei film in corso....";
+        },
+        appendMovie: (movieDom) => {
+          containerRisultati.innerHTML += movieDom;
+        },
+        noResults: () => {
+          containerRisultati.innerHTML = "Nessun risultato";
+        },
+        // mostra la schermata info e nasconde quella di ricerca
+        showMovieInfo: (id) => {
+          document.getElementById("view-search").classList = ["view"];
+          document.getElementById("view-movieinfo").classList = ["view", "active"];
+        },
+        // nasconde la schermata info e mostra quella di ricerca
+        backMovies: () => {
+          document.getElementById("view-search").classList = ["view", "active"];
+          document.getElementById("view-movieinfo").classList = ["view"];
+        },
+        createMovieInfo: (cover, title, id, description, year) => {
+          return '      <div class="card">\
+                            <div class="cover">\
+                              <img src="'+ cover + '" > \
+                              </div>\
+                            <div class="title">'+ title + '</div>\
+                            <div class="imdbid">\
+                              IMDb ID: '+ id + '\
+                            </div>\
+                            <hr>\
+                            <div class="description">\
+                              '+ (description ? description : "Nessuna Descrizione") + '\
+                            </div>\
+                            <div class="year">\
+                              '+ year + '\
+                            </div>\
+                            <div class="footer">\
+                            </div>\
+                          </div>';
+        },
+
+      }
+
+      searchBtn.addEventListener("click", () => {
+        application.loadingMovies();
+        // accedo al selettore HTML
+        let selector = document.getElementById("searchSelect");
+        if (selector.value == "value1") {
+
+          application.searchMovies(searchInput.value).then((risultati) => {
+            application.emptyContainerResults();
+            if (risultati.Search !== undefined && risultati.Search.length) {
+              for (movie of risultati.Search) {
+                // nota: invece di passare movie.description, inesistente tra i campi del json, si passa una stringa vuota
+                application.appendMovie(application.createCardFilm(movie.Poster, movie.Title, movie.imdbID, movie.Year));
+              }
+              const listaPulsanti = document.querySelectorAll(".card .footer button");
+              for (let pulsante of listaPulsanti) {
+                pulsante.addEventListener("click", (event) => {
+                  console.log(event.currentTarget.getAttribute("data-movieid"));
+                  application.searchMovies2(event.currentTarget.getAttribute("data-movieid")).then((risultati2) => {
+                    document.getElementById("movieinfo2").innerHTML = application.createMovieInfo(risultati2.Poster, risultati2.Title, risultati2.imdbID, risultati2.Plot, risultati2.Year);
+                  })
+                  application.showMovieInfo(event.currentTarget.getAttribute("data-movieid"));
+                })
+              }
+            } else {
+              // nel caso la ricerca non porti risultati esegue la funzione che mostra un messaggio di avviso
+              application.noResults();
+            }
+          });
+
+        } else if (selector.value == "value2") {
+
+          application.searchMovies2(searchInput.value).then((risultati) => {
+            application.emptyContainerResults();
+            // accede al valore della chiave Responde dell'oggetto json risultati e verifica che sia diverso da false
+            if (risultati.Response !== "False") {
+              document.getElementById("view-movieinfo").innerHTML += application.createMovieInfo(risultati.Poster, risultati.Title, risultati.imdbID, risultati.Plot, risultati.Year);
+              application.showMovieInfo();
+              console.log(document.getElementById("view-search").innerHTML);
+              console.log(document.getElementById("view-movieinfo").innerHTML);
+              console.log(application.backMovies.innerHTML);
+            } else {
+              // nel caso la ricerca non porti risultati esegue la funzione che mostra un messaggio di avviso
+              application.noResults();
+            }
+          });
+
+        }
+      });
+      // gestisco l'azione che deve compiere quando premerò il bottone indietro
+      backBtn.addEventListener("click", () => {
+        application.backMovies();
+        // non eseguo la funzione loadingMovies poiché i risultati dei film sono semplicemente nascosti
+      })
+    }
+
+
+  </script>
+
+
+
+</body>
+
+</html>
