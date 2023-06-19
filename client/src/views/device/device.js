@@ -225,12 +225,12 @@ function Device() {
                     borderColor: '#4c64df',
                     backgroundColor: '#5873fe'
                 },
-                {
-                    label: 'Pressure',
-                    data: dataPressure,
-                    borderColor: '#e9b903',
-                    backgroundColor: '#ffca00'
-                },
+                // {
+                //     label: 'Pressure',
+                //     data: dataPressure,
+                //     borderColor: '#e9b903',
+                //     backgroundColor: '#ffca00'
+                // },
                 {
                     label: 'Air Quality',
                     data: dataGas,
