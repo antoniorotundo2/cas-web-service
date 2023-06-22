@@ -22,5 +22,8 @@ export default {
     },
     getDevicesByUser: async (idUser) => {
         return await axios.get(DeviceEndpoints.getDevicesByUser + idUser, { withCredentials: true });
+    },
+    getDevicesDashboard: async() =>{
+        return await axios.get(DeviceEndpoints.getDevicesDashboard, { withCredentials: true });
     }
 }

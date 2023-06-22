@@ -10,6 +10,7 @@
     "axios": "^1.4.0",
     "boxicons": "^2.1.4",
     "chart.js": "^4.3.0",
+    "javascript-color-gradient": "^2.4.4",
     "jquery": "^3.6.4",
     "moment": "^2.29.4",
     "nanoscroller": "^0.8.7",

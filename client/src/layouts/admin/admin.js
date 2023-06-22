@@ -41,7 +41,8 @@ function Admin() {
         } else { return <></> }
     }
 
-    const options = $.extend({}, sidebar.DEFAULTS, $(this).data(), typeof option == 'object' && option);
+    const options = sidebar.DEFAULTS;   
+    // $.extend({}, sidebar.DEFAULTS, $(this).data(), typeof option == 'object' && option);
     let cursidebar;
 
     useEffect(() => {

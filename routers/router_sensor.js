@@ -71,6 +71,52 @@ router.get("/", allowLogged, (req, resp) => {
         resp.status(404).send({ sensors: null, msg: 'sensors not found', error: true });
     })
 });
+
+router.get("/dashboard",allowLogged, (req, resp) => {
+    SensorModel.aggregate([
+        { $match : { idUser: new ObjectId(req.session.user._id) }},
+        {
+            $lookup: {
+                //searching collection name
+                from: 'reads',
+                foreignField: "idSensor",
+                localField:"_id",
+                //search query with our [searchId] value
+                "pipeline":[
+                  //searching [searchId] value equals your field [_id]
+                  //{"$match": {"_id":"$idUser"}},
+                  //projecting only fields you reaaly need, otherwise you will store all - huge data loads
+                  {$sort:{"timestamp":-1}},
+                  {$limit:1},
+                  {"$project":{"timestamp": 1,"temperature": 1, "humidity":1, "pressure":1, "gas":1}}
+
+                ],
+
+                'as': 'lastRead'
+
+              }
+        },
+        {
+            $project:{
+                "idSensor":"$idSensor",
+                "lastRead":"$lastRead",
+                "Latitude":"$latitude",
+                "Longitude":"$longitude"
+            }
+        }
+    ]).then((sensors) => {
+        if (sensors) {
+            
+            resp.status(200).send({ sensors: sensors, msg: 'sensors found', error: false });
+        } else {
+            resp.status(404).send({ sensors: null, msg: 'sensors not found', error: true });
+        }
+    }).catch((err) => {
+        console.log(err);
+        resp.status(404).send({ sensors: null, msg: 'sensors not found', error: true });
+    })
+});
+
 //
 router.get("/all",allowLogged, allowAdmin, (req, resp) => {
     SensorModel.aggregate([

@@ -11,6 +11,7 @@ import "./assets/css/style.css";
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+document.title = "Chirp Air Station";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

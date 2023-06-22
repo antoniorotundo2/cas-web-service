@@ -4,7 +4,7 @@ const getHost = ()=>{
     if(!process.env.NODE_ENV || process.env.NODE_ENV=="development"){
         return "//localhost:8080/";
     } else {
-        return "";
+        return "//"+window.location.host+"/";
     }
 } 
 
@@ -21,7 +21,8 @@ const DeviceEndpoints = {
     getAdminAllDevices:getHost()+"sensor/all",
     getAllDevices:getHost()+"sensor",
     getDevice:getHost()+"sensor/",
-    getDevicesByUser:getHost()+"sensor/user/"
+    getDevicesByUser:getHost()+"sensor/user/",
+    getDevicesDashboard:getHost()+"sensor/dashboard"
 }
 
 const ReadEndpoints = {
