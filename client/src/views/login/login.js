@@ -13,7 +13,6 @@ function Login() {
 
   const onSubmitForm = async (event) => {
     event.preventDefault();
-    console.log(process.env.NODE_ENV);
     setErrorMessage("");
     const resp = await AuthService.login(emailInput.current.value, passwordInput.current.value);
     if (resp.statusText != "OK") {

@@ -9,7 +9,9 @@ const geoUrl =
 
 function Dashboard() {
 
-  const colorGradient = new Gradient().setColorGradient("#e74c3c", "#2ecc71", "#3498db");
+  const [scaleFactor, setScaleFactor] = useState(2);
+
+  const colorGradient = new Gradient().setColorGradient("#0b2407", "#319620", "#56ff38");
 
   const [devicesList, setDevicesList] = useState([]);
 
@@ -46,15 +48,14 @@ function Dashboard() {
   const createMarkers = () => {
     const elements = [];
     for (const device of devicesList) {
-      console.log(device);
       const quality = (device.lastRead && device.lastRead.length > 0) ? device.lastRead[0].gas : 0;
       elements.push(
         <Marker coordinates={[device.Longitude, device.Latitude]}>
-          <circle r={3} fill={colorFromValue(quality)} stroke="#fff" strokeWidth={1} />
+          <circle r={8/scaleFactor} fill={colorFromValue(quality)} stroke="#fff" strokeWidth={2/scaleFactor} />
           <text
             textAnchor="middle"
-            y={-5}
-            style={{ fontFamily: "system-ui", fill: "#5D5A6D", fontSize: "0.2em" }}
+            y={-8/scaleFactor}
+            style={{ fontFamily: "system-ui", fill: "#5D5A6D", fontSize: "0.14em" }}
           >
             {device.idSensor}
           </text>
@@ -94,7 +95,8 @@ function Dashboard() {
             </div>
             <div class="card-body" style={{ maxHeight: "300px", overflow: "hidden" }}>
               <ComposableMap projection="geoMercator" height={300}>
-                <ZoomableGroup center={[centerMap.longitude,centerMap.latitude]} zoom={2}>
+                <ZoomableGroup center={[centerMap.longitude,centerMap.latitude]} zoom={2} onMove={({ x,y,zoom,dragging }) => {
+                  setScaleFactor(zoom)}}>
                   <Geographies geography={geoUrl}>
                     {({ geographies }) =>
                       geographies.map((geo) => (

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+// definisce lo schema dei dati sensore
 const Sensor = new Schema({
     idSensor:{type:String,default:'999'},
     //temperature:Number,

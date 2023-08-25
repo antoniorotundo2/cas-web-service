@@ -10,20 +10,17 @@ const ReadModel = require('./models/read');
 const cors = require('cors');
 const session = require("express-session");
 const { instrument } = require("@socket.io/admin-ui");
-
+// importo i router definiti per user, sensor e reads
 const userRouter = require('./routers/router_user');
 const sensorRouter = require('./routers/router_sensor');
 const readRouter = require('./routers/router_reads');
-
+// importo mqtt e avvio la connesione al broker mqtt pubblico
 const mqtt = require('mqtt');
 const clientMqtt = mqtt.connect('mqtt://broker.hivemq.com:1883');
-
+// effettuo la sottoscrizione al topic, contenente le rilevazione in base all'id sensore
 const mqttConnect = () => {
     clientMqtt.on('connect', function () {
         clientMqtt.subscribe('cas/sensor', function (err) {
-            if (!err) {
-                console.log('successful subscription');
-            }
         })
     })
 
@@ -42,10 +39,10 @@ const mqttConnect = () => {
 
     })
 }
-
+// imposto la durata della sessione dell'utente, mediante la generazione di un cookie
 const sessionMiddleware = session({ secret: "cas-secret", saveUninitialized: true, resave: true, cookie: { maxAge: 60 * 60 * 24 * 1000 }, unset: "destroy" });
-
-mongoose.connect('mongodb://localhost:27017/cas-db')
+// mi collego al database mongodb, eseguo il middleware cors con express
+mongoose.connect('mongodb://cas-db:27017/cas-db')
     .then(() => {
         app.use(cors({ credentials: true, origin: "http://localhost:3000", methods: ["POST", "GET", "PUT", "DELETE", "HEAD", "OPTIONS"] }));
         app.use(sessionMiddleware);
@@ -65,17 +62,15 @@ mongoose.connect('mongodb://localhost:27017/cas-db')
         mqttConnect();
 
         webSocketServer.on('connection', (client) => {
-            console.log('qualcuno si è collegato');
             client.on('join', (idSensor) => {
                 client.join('device:' + idSensor);
             });
         });
-
+        // avvio il server node.js alla porta 8080
         httpServer.listen(8080, () => {
             console.log("Server listen on port 8080");
         });
     }).catch((err) => {
-        console.log("connection failed to DB");
         console.log(err);
         process.exit();
     });

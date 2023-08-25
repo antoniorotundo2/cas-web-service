@@ -63,7 +63,6 @@ function Profile() {
 
   const getUserInfo = async () => {
     const resp = (await UserService.getMe()).data.data;
-    console.log(resp);
     setUserInfo(resp);
   }
 

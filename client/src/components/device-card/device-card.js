@@ -46,7 +46,7 @@ function DeviceCard(props) {
                         <h4>Device {device.idSensor}</h4>
                     </div>
                     <div class="card-body">
-                        <PolarArea data={data} />;
+                        <PolarArea data={data} />
                     </div>
                     <div class="card-footer">
                         <div>

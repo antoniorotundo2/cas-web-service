@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
+// definisce lo schema delle misurazioni dal sensore
 const Read = new Schema({
     idSensor:{type:Schema.Types.ObjectId,ref:'Sensor'},
     temperature:Number,

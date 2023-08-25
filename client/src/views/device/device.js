@@ -79,6 +79,9 @@ function Device() {
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    usePointStyle: true
+                }
             },
             tooltip: {
                 callbacks: {
@@ -217,25 +220,25 @@ function Device() {
                     label: 'Temperature',
                     data: dataTemperature,
                     borderColor: '#269b41',
-                    backgroundColor: '#28a745'
+                    backgroundColor: '#28a745',
+                    pointStyle: 'circle',
+                    radius: 5
                 },
                 {
                     label: 'Humidity',
                     data: dataHumidity,
                     borderColor: '#4c64df',
-                    backgroundColor: '#5873fe'
+                    backgroundColor: '#5873fe',
+                    pointStyle: 'rectRot',
+                    radius: 5
                 },
-                // {
-                //     label: 'Pressure',
-                //     data: dataPressure,
-                //     borderColor: '#e9b903',
-                //     backgroundColor: '#ffca00'
-                // },
                 {
                     label: 'Air Quality',
                     data: dataGas,
                     borderColor: '#c82e3d',
-                    backgroundColor: '#dc3545'
+                    backgroundColor: '#dc3545',
+                    pointStyle: 'triangle',
+                    radius: 5
                 }
                 ]
             })

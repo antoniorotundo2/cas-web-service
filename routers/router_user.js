@@ -3,7 +3,8 @@ const router = express.Router();
 const UserModel = require('../models/user');
 const { allowNotAuthenticated, allowLogged, allowAdmin } = require("../middlewares/user_middlewares");
 const crypto = require("node:crypto");
-
+// api post per gestire la registrazione di un nuovo utente. come parametro è stato passato il middleware allownotauthenticated
+// per non proteggere la rotta
 router.post("/register", allowNotAuthenticated, (req, resp) => {
     const { username, password, email } = req.body;
     UserModel.exists({ username: username, email: email }).then((user) => {
@@ -21,6 +22,8 @@ router.post("/register", allowNotAuthenticated, (req, resp) => {
         resp.send({ msg: err, error: true });
     });
 })
+// api post per gestire l'accesso utente. come parametro è stato passato il middleware allownotauthenticated per non proteggere
+// la rotta
 router.post("/login", allowNotAuthenticated, (req, resp) => {
     const { email, password } = req.body;
     UserModel.findOne({ email: email, password: crypto.createHash("sha256").update(password).digest("hex") }).then((user) => {
@@ -37,7 +40,7 @@ router.post("/login", allowNotAuthenticated, (req, resp) => {
         resp.send({ msg: err, error: true });
     });
 })
-
+// api get per gestire la schermata iniziale di dashboard in caso, nel caso in cui l'utente ha già fatto accesso
 router.get("/", allowLogged, allowAdmin, (req, resp) => {
     UserModel.aggregate([
         {
@@ -68,7 +71,7 @@ router.get("/", allowLogged, allowAdmin, (req, resp) => {
         resp.status(404).send({ users: null, msg: 'users not found', error: true });
     })
 })
-
+// api per la gestione del logout
 router.all("/logout", (req, resp) => {
     req.session.destroy((err) => {
         console.log(err);
@@ -76,7 +79,7 @@ router.all("/logout", (req, resp) => {
         resp.send({ msg: "logged out", error: false });
     });
 })
-
+// api get per visualizzare il profilo utente corrente, rimuovendo dalle informazioni verso il client l'invio della password
 router.get("/me", allowLogged, (req, resp) => {
 
     let data = req.session.user;
@@ -85,7 +88,7 @@ router.get("/me", allowLogged, (req, resp) => {
 
     resp.send({ msg: "", data: data, error: false })
 })
-
+// api get per visualizzare l'utente selezionato, rimuovendo dalle informazioni verso il client l'invio della password
 router.get("/:idUser", allowLogged, allowAdmin, (req, resp) => {
     const { idUser } = req.params;
     UserModel.findOne({ _id: idUser}).then((user) => {
@@ -100,7 +103,7 @@ router.get("/:idUser", allowLogged, allowAdmin, (req, resp) => {
     });
 
 })
-
+// api put dove gestisco il cambio password per l'utente corrente
 router.put("/password", allowLogged, (req, resp) => {
     // ricevo i campi dal payload del client
     const { newPassword, repeatNewPassword } = req.body;
@@ -125,7 +128,7 @@ router.put("/password", allowLogged, (req, resp) => {
         resp.send({ msg: err, error: true });
     });
 })
-
+// api put per gestire il cambio ruolo per l'utente selezionato
 router.put("/:idUser/role", allowLogged, allowAdmin, (req, resp) => {
     const { idUser } = req.params;
     const { newRole } = req.body;

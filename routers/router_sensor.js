@@ -4,7 +4,7 @@ const router = express.Router();
 const SensorModel = require('../models/sensor');
 const { allowNotAuthenticated, allowLogged, allowAdmin } = require("../middlewares/user_middlewares");
 const ObjectId = mongoose.Types.ObjectId;
-
+// api post dove gestisce il caricamento dati del sensore ricevuto dal mqtt-service al database mongodb
 router.post("/", allowLogged, (req, resp) => {
     const { idSensor, latitude, longitude } = req.body;
     // verificare se il sensore è già registrato
@@ -24,7 +24,7 @@ router.post("/", allowLogged, (req, resp) => {
         resp.send({ msg: err, error: true });
     });
 });
-
+// api delete per gestire la cancellazione del sensore indicato
 router.delete("/:idSensor", allowLogged, (req, resp) => {
     const { idSensor } = req.params;
     // verificare se il sensore è già registrato
@@ -34,7 +34,7 @@ router.delete("/:idSensor", allowLogged, (req, resp) => {
         resp.send({ msg: err, error: true });
     });
 });
-
+// api put per aggiornare i dati delle coordinate geografiche per il sensore indicato
 router.put("/:idSensor", allowLogged, (req, resp) => {
     const { idSensor } = req.params;
     const { latitude, longitude } = req.body;
@@ -47,7 +47,7 @@ router.put("/:idSensor", allowLogged, (req, resp) => {
 });
 
 
-
+// api get per gestire la lettura dei dati delle coordinate geografiche per il sensore corrente
 router.get("/", allowLogged, (req, resp) => {
     SensorModel.aggregate([
         {
@@ -117,7 +117,7 @@ router.get("/dashboard",allowLogged, (req, resp) => {
     })
 });
 
-//
+// api get per ricevere tutti i sensori, con i relativi utenti e coordinate geografiche
 router.get("/all",allowLogged, allowAdmin, (req, resp) => {
     SensorModel.aggregate([
         { $match : {}},
@@ -165,7 +165,7 @@ router.get("/all",allowLogged, allowAdmin, (req, resp) => {
         resp.status(404).send({ sensors: null, msg: 'sensors not found', error: true });
     })
 });
-
+// api get per trovare il sensore, in base al suo id
 router.get("/:idSensor", allowLogged, (req, resp) => {
     const { idSensor } = req.params;
     SensorModel.findOne({ idSensor: idSensor }).then((sensor) => {
@@ -178,7 +178,7 @@ router.get("/:idSensor", allowLogged, (req, resp) => {
         resp.status(404).send({ sensor: null, msg: 'sensor not found', error: true });
     })
 });
-
+// api get per ottenere le informazioni sull'id sensore e delle coordinate geografiche
 router.get("/user/:idUser", allowLogged, allowAdmin, (req, resp) => {
     const { idUser } = req.params;
     SensorModel.aggregate([
@@ -194,8 +194,6 @@ router.get("/user/:idUser", allowLogged, allowAdmin, (req, resp) => {
         }
     ])
     .then((sensors) => {
-        console.log(idUser);
-        console.log(sensors);
         if (sensors) {
             resp.status(200).send({ sensors: sensors, msg: 'sensors found', error: false });
         } else {

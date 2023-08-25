@@ -15,10 +15,8 @@ function Register() {
 
   const onSubmitForm = async (event) => {
     event.preventDefault();
-    console.log(process.env.NODE_ENV);
     setErrorMessage("");
     const resp = await AuthService.register(usernameInput.current.value,emailInput.current.value, passwordInput.current.value);
-    console.log(resp);
     if (resp.statusText != "OK") {
       setErrorMessage("An error as occured");
       return;

@@ -44,7 +44,7 @@ function Admin() {
     const options = sidebar.DEFAULTS;   
     // $.extend({}, sidebar.DEFAULTS, $(this).data(), typeof option == 'object' && option);
     let cursidebar;
-
+    // viene aggiornata ogni qualvolta quella dipendenza [..] viene modificata
     useEffect(() => {
         $('.sidebar').each(function () {
             cursidebar = new sidebar(this, options);

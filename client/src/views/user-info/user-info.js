@@ -57,7 +57,6 @@ function UserInfo() {
         cell: (row) => {
           return <>
             <button type="button" class="btn btn-primary btn-sm btn-addon" onClick={() => {
-              console.log(row);
               navigate("../users-devices/"+row.idSensor);
             }} ><i class="ti-info" ></i>Show Info</button>
           </>

@@ -5,7 +5,7 @@ const SensorModel = require('../models/sensor');
 const ReadModel = require('../models/read');
 const { allowNotAuthenticated, allowLogged, allowAdmin } = require("../middlewares/user_middlewares");
 const ObjectId = mongoose.Types.ObjectId;
-
+// api get per la visualizzazione del dispositivo
 router.get("/:idSensor", allowLogged, (req, resp) => {
     const { idSensor } = req.params;
     let filter = { idSensor: idSensor, idUser:new ObjectId(req.session.user._id)};
@@ -40,7 +40,7 @@ router.get("/:idSensor", allowLogged, (req, resp) => {
     })
 
 });
-
+// api post per il salavataggio dei dati dal mqtt broker al database mongodb
 router.post("/:idSensor",(req,resp)=>{
     const { idSensor } = req.params;
     const { temperature, humidity, pressure, gas } = req.body;
@@ -60,7 +60,7 @@ router.post("/:idSensor",(req,resp)=>{
         resp.status(501).send({ sensor: null, msg: err, error: true });
     })
 });
-
+// api get per ottenere dal database mongodb, il campo cercato per quel id sensore
 router.get("/:idSensor/:field", (req, resp) => {
     const { idSensor, field } = req.params;
     SensorModel.findOne({ idSensor: idSensor }).then((sensor) => {
