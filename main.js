@@ -1,3 +1,4 @@
+const CONFIG = require('./config.json');
 const express = require("express");
 const app = express();
 const http = require('http');
@@ -16,11 +17,11 @@ const sensorRouter = require('./routers/router_sensor');
 const readRouter = require('./routers/router_reads');
 // importo mqtt e avvio la connesione al broker mqtt pubblico
 const mqtt = require('mqtt');
-const clientMqtt = mqtt.connect('mqtt://broker.hivemq.com:1883');
+const clientMqtt = mqtt.connect(CONFIG["mqtt-broker"]);
 // effettuo la sottoscrizione al topic, contenente le rilevazione in base all'id sensore
 const mqttConnect = () => {
     clientMqtt.on('connect', function () {
-        clientMqtt.subscribe('cas/sensor', function (err) {
+        clientMqtt.subscribe(CONFIG["mqtt-topic"], function (err) {
         })
     })
 
@@ -42,7 +43,7 @@ const mqttConnect = () => {
 // imposto la durata della sessione dell'utente, mediante la generazione di un cookie
 const sessionMiddleware = session({ secret: "cas-secret", saveUninitialized: true, resave: true, cookie: { maxAge: 60 * 60 * 24 * 1000 }, unset: "destroy" });
 // mi collego al database mongodb, eseguo il middleware cors con express
-mongoose.connect('mongodb://cas-db:27017/cas-db')
+mongoose.connect(CONFIG["mongodb-url"])
     .then(() => {
         app.use(cors({ credentials: true, origin: "http://localhost:3000", methods: ["POST", "GET", "PUT", "DELETE", "HEAD", "OPTIONS"] }));
         app.use(sessionMiddleware);
