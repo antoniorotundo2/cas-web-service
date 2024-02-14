@@ -25,7 +25,7 @@ import moment from 'moment';
 import TableLoader from '../../components/table-loader/table-loader';
 
 const geoUrl =
-    "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
+    "https://raw.githubusercontent.com/xoolive/topojson/master/world-countries.json"
 
 ChartJS.register(
     CategoryScale,

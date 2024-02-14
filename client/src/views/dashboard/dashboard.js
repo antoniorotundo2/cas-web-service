@@ -5,7 +5,7 @@ import DeviceService from '../../services/device-service';
 import Gradient from "javascript-color-gradient";
 
 const geoUrl =
-  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
+  "https://raw.githubusercontent.com/xoolive/topojson/master/world-countries.json"
 
 function Dashboard() {
 
